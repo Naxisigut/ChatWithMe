@@ -2,7 +2,13 @@
 
 ## Tech Stack
 
-1. 
+1. openAI
+
+2. dot-env  添加环境变量
+
+   `npm i dot-env`
+
+   .env.json
 
 ## Project Init
 
@@ -22,4 +28,6 @@
 
    `npm install -g ts-node`
 
+   `npm install -D tslib @types/node`： node ts 类型提示
+   
    `ts --init`:  generate tsconfig.json

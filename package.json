@@ -9,6 +9,11 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "dot-env": "^0.0.1",
     "openai": "^3.3.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.4.5",
+    "tslib": "^2.6.1"
   }
 }
