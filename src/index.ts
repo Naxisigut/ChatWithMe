@@ -1,5 +1,6 @@
 import dotenv from 'dotenv';
 import { Configuration, OpenAIApi } from 'openai';
+import readlineSync from 'readline-sync';
 dotenv.config()
 
 const configuration = new Configuration({
@@ -8,17 +9,27 @@ const configuration = new Configuration({
 });
 const openai = new OpenAIApi(configuration);
 
-const Messages: {role: 'user' | 'assistant', content: string}[] = []
+const messages: {role: 'user' | 'assistant', content: string}[] = []
 ;(async ()=>{
   while(true){
 
+    const userInput = readlineSync.question('You: ')
+    messages.push({
+      role: 'user', content: userInput
+    })
+
     const chatCompletion = await openai.createChatCompletion({
       model: "gpt-3.5-turbo",
-      messages: [{role: "user", content: "Hello world"}],
+      messages: messages,
     });
-    const message = chatCompletion.data.choices[0].message 
-    // Messages.push(message)
-    console.log(message);
+    const message = chatCompletion.data.choices[0].message?.content!
+    messages.push({
+      role: 'assistant',
+      content: message
+    })
+    console.log('mentor: ' + message);
+    // readlineSync.
+    // console.log(message);
   }
 })()
 
