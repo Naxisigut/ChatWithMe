@@ -9,8 +9,10 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "colors": "^1.4.0",
     "dotenv": "^16.3.1",
     "openai": "^3.3.0",
+    "readline-promise": "^1.0.5",
     "readline-sync": "^1.4.10"
   },
   "devDependencies": {
