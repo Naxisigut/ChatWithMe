@@ -1,7 +1,7 @@
 import dotenv from 'dotenv';
 import { Configuration, OpenAIApi } from 'openai';
-import readlineSync from 'readline-sync';
 import readline from 'readline-promise';  // @ts-ignore
+import inquirer from 'inquirer';
 dotenv.config()
 // process.stdin.setEncoding('utf8');
 
@@ -22,18 +22,6 @@ const rl = readline.createInterface({
   input: process.stdin,
   output: process.stdout,
 });
-
-// async function getUserInput() {
-//   try {
-//     const userInput = await rl.questionAsync('You: ');
-//     console.log(userInput);
-//   } catch (error) {
-//     console.error(error);
-//   } 
-// }
-
-// getUserInput()
-
 
 const messages: {role: 'user' | 'assistant', content: string}[] = []
 ;(async ()=>{
