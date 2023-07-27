@@ -10,6 +10,8 @@
 //   messages: [{role: "user", content: "Hello world"}],
 // });
 // console.log(chatCompletion.data.choices[0].message);
-import 'dot-env';
+import dotenv from 'dotenv';
+dotenv.config()
+
 console.log(process.env);
 console.log(typeof process.env.test);

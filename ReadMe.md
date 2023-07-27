@@ -6,9 +6,9 @@
 
 2. dot-env  添加环境变量
 
-   `npm i dot-env`
+   `npm i dotenv`
 
-   .env.json
+   .env
 
 ## Project Init
 
