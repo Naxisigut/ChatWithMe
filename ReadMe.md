@@ -24,6 +24,12 @@
    - `npm i -D @rollup/plugin-typescript` ： 否则无法打包ts代码
    - ts.config.js的module改为NodeNext：否则打包出来的代码有问题，可能会有代码无法打包进去
 
+7. npm link
+
+   - package.json 增加bin路径， 修改name（会被默认link成为命令）
+   - `npm i -D rollup-plugin-add-shebang`
+   - rollup.config.js 增加插件rollup-plugin-add-shebang， 并配置路径，用于在每次构建时在文件头增加shebang
+
 ## Project Init
 
 1. git

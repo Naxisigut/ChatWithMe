@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 import dotenv from 'dotenv';
 import colors from 'colors';
 import { Configuration, OpenAIApi } from 'openai';
@@ -125,7 +127,7 @@ const botAnswer = (answer) => {
 
 const userInput = () => __awaiter(void 0, void 0, void 0, function* () {
     const input = yield inquirer.prompt({
-        name: 'question', message: 'You: ', default: 'vue的作者是？', prefix: ''
+        name: 'question', message: 'You: ', prefix: ''
     });
     return addMsgGo(input.question);
 });

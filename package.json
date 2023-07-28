@@ -1,5 +1,6 @@
 {
-  "name": "chatwithme",
+  "name": "demo-cc",
+  "bin": "./dist/bundler.js",
   "version": "1.0.0",
   "description": "",
   "type": "module",
@@ -23,6 +24,7 @@
     "@types/inquirer": "^9.0.3",
     "@types/node": "^20.4.5",
     "rollup": "^3.26.3",
+    "rollup-plugin-add-shebang": "^0.3.1",
     "tslib": "^2.6.1"
   }
 }
