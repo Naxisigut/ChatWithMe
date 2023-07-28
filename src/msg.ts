@@ -1,5 +1,5 @@
 /* 通话记录 */
-export const messages: Message[] = []
+export let messages: Message[] = []
 
 /** 增加用户询问信息
  * 
@@ -25,4 +25,11 @@ export const addMsgBack = async (msg: string) => {
     content: msg
   })
   return msg
+}
+
+/** 清空记录
+ * 
+ */
+export const clearRecord = () => {
+  messages.length = 0
 }

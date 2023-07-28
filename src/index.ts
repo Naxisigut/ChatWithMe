@@ -8,7 +8,10 @@ initBot()
 ;(async ()=>{
   while(true){
     const input = await userInput()
-    inputCheck(input)
+
+    const isNeedAnswer = inputCheck(input)
+    if(!isNeedAnswer)continue
+    
     const answer = await getBotAnswer(messages)
     botAnswer(answer)
   }

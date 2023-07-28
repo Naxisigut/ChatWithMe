@@ -1,5 +1,5 @@
 import inquirer from 'inquirer';
-import { addMsgGo } from './msg.js';
+import { addMsgGo, clearRecord } from './msg.js';
 
 export const userInput = async () => {
   const input = await inquirer.prompt({
@@ -8,15 +8,19 @@ export const userInput = async () => {
   return addMsgGo(input.question)
 }
 
+/** 用户输入特定字符检测
+ *  
+ * @param command 
+ * return 是否需要获取回答
+ */
 export const inputCheck = (command: string) => {
   switch (command) {
     case 'exit':
       process.exit()
-    case 'Exit':
-      process.exit()
-      break;
-  
+    case 'clear':
+      clearRecord()
+      return false
     default:
-      break;
+      return true
   }
 }

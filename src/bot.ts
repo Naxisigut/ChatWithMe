@@ -2,9 +2,8 @@ import colors from 'colors';
 import { Configuration, OpenAIApi } from 'openai';
 import { addMsgBack } from './msg.js';
 import { spinner } from './loading.js';
-
-
 colors.enable()
+
 let Bot: OpenAIApi | undefined = undefined
 
 /** 初始化bot
@@ -34,6 +33,10 @@ export const getBotAnswer = async (messages: Message[]) => {
   return addMsgBack(answer)
 }
 
+/** 在控制台输出回答
+ * 
+ * @param answer 
+ */
 export const botAnswer = (answer: string) => {
   console.log(` ${'Bot: '.rainbow} ${answer.green}\r`);
 }
