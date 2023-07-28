@@ -2,9 +2,12 @@
   "name": "chatwithme",
   "version": "1.0.0",
   "description": "",
+  "type": "module",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "rollup -c rollup.config.js",
+    "dev": "node dist/bundler"
   },
   "author": "",
   "license": "ISC",
@@ -12,11 +15,14 @@
     "colors": "^1.4.0",
     "dotenv": "^16.3.1",
     "inquirer": "^8.0.0",
-    "openai": "^3.3.0"
+    "openai": "^3.3.0",
+    "ora": "^6.3.1"
   },
   "devDependencies": {
+    "@rollup/plugin-typescript": "^11.1.2",
     "@types/inquirer": "^9.0.3",
     "@types/node": "^20.4.5",
+    "rollup": "^3.26.3",
     "tslib": "^2.6.1"
   }
 }

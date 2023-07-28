@@ -37,9 +37,8 @@ const messages: {role: 'user' | 'assistant', content: string}[] = []
       role: 'assistant',
       content: answer
     })
-    console.log(` ${'Bot: '.rainbow} ${answer.green}`);
     spinner.stop()
-    // console.log(' ' + 'Bot: '.bgBlue + ' ' + answer.green);
+    console.log(` ${'Bot: '.rainbow} ${answer.green}\r`);
   }
 })()
 
