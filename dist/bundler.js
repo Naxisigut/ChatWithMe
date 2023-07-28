@@ -1,8 +1,8 @@
 import dotenv from 'dotenv';
-import { Configuration, OpenAIApi } from 'openai';
 import colors from 'colors';
-import inquirer from 'inquirer';
+import { Configuration, OpenAIApi } from 'openai';
 import ora from 'ora';
+import inquirer from 'inquirer';
 
 /******************************************************************************
 Copyright (c) Microsoft Corporation.
@@ -36,36 +36,126 @@ typeof SuppressedError === "function" ? SuppressedError : function (error, suppr
     return e.name = "SuppressedError", e.error = error, e.suppressed = suppressed, e;
 };
 
-dotenv.config();
-colors.enable();
-const configuration = new Configuration({
-    basePath: 'https://api.chatanywhere.com.cn',
-    apiKey: process.env.OPENAI_API_KEY,
+/* 通话记录 */
+let messages = [];
+/** 增加用户询问信息
+ *
+ * @param msg
+ * @returns
+ */
+const addMsgGo = (msg) => __awaiter(void 0, void 0, void 0, function* () {
+    messages.push({
+        role: 'user',
+        content: msg
+    });
+    return msg;
 });
-const openai = new OpenAIApi(configuration);
-const messages = [];
-(() => __awaiter(void 0, void 0, void 0, function* () {
+/** 增加bot回答信息
+ *
+ * @param msg
+ * @returns
+ */
+const addMsgBack = (msg) => __awaiter(void 0, void 0, void 0, function* () {
+    messages.push({
+        role: 'assistant',
+        content: msg
+    });
+    return msg;
+});
+/** 清空记录
+ *
+ */
+const clearRecord = () => {
+    messages.length = 0;
+};
+
+// let spinner: Ora 
+// export const loadingStart = () => {
+//   spinner = ora('loading').start()
+// } 
+// export const loadingStop = () => {
+//   spinner.stop()
+// }
+// let spinner
+let loading;
+const spinner = {
+    start: () => {
+        loading = ora('loading').start();
+    },
+    stop: () => {
+        loading.stop();
+    }
+};
+
+colors.enable();
+let Bot = undefined;
+/** 初始化bot
+ *
+ */
+const initBot = () => {
+    const configuration = new Configuration({
+        basePath: 'https://api.chatanywhere.com.cn',
+        apiKey: process.env.OPENAI_API_KEY,
+    });
+    Bot = new OpenAIApi(configuration);
+};
+/** 调用openAi接口，获取回答
+ *
+ * @param messages
+ * @returns
+ */
+const getBotAnswer = (messages) => __awaiter(void 0, void 0, void 0, function* () {
     var _a;
+    spinner.start();
+    const chatCompletion = yield Bot.createChatCompletion({
+        model: "gpt-3.5-turbo",
+        messages,
+    });
+    spinner.stop();
+    const answer = (_a = chatCompletion.data.choices[0].message) === null || _a === void 0 ? void 0 : _a.content;
+    return addMsgBack(answer);
+});
+/** 在控制台输出回答
+ *
+ * @param answer
+ */
+const botAnswer = (answer) => {
+    console.log(` ${'Bot: '.rainbow} ${answer.green}\r`);
+};
+
+const userInput = () => __awaiter(void 0, void 0, void 0, function* () {
+    const input = yield inquirer.prompt({
+        name: 'question', message: 'You: ', default: 'vue的作者是？', prefix: ''
+    });
+    return addMsgGo(input.question);
+});
+/** 用户输入特定字符检测
+ *
+ * @param command
+ * return 是否需要获取回答
+ */
+const inputCheck = (command) => {
+    switch (command) {
+        case 'exit':
+            process.exit();
+        case 'clear':
+            clearRecord();
+            return false;
+        default:
+            return true;
+    }
+};
+
+dotenv.config();
+initBot();
+(() => __awaiter(void 0, void 0, void 0, function* () {
     while (true) {
-        const userInput = yield inquirer.prompt({
-            name: 'question', message: 'You: ', default: 'vue的作者是？', prefix: ''
-        });
-        messages.push({
-            role: 'user', content: userInput.question
-        });
-        const spinner = ora('Loading unicorns').start();
-        const chatCompletion = yield openai.createChatCompletion({
-            model: "gpt-3.5-turbo",
-            messages: messages,
-        });
-        const answer = (_a = chatCompletion.data.choices[0].message) === null || _a === void 0 ? void 0 : _a.content;
-        messages.push({
-            role: 'assistant',
-            content: answer
-        });
-        spinner.stop();
-        console.log(` ${'Bot: '.rainbow} ${answer.green}\r`);
-        // console.log(' ' + 'Bot: '.bgBlue + ' ' + answer.green);
+        const input = yield userInput();
+        const isNeedAnswer = inputCheck(input);
+        if (!isNeedAnswer)
+            continue;
+        const answer = yield getBotAnswer(messages);
+        botAnswer(answer);
     }
 }))();
 // console.log(process.env.OPENAI_API_KEY);
