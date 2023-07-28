@@ -1,17 +1,15 @@
 import dotenv from 'dotenv';
 import { initBot, getBotAnswer, botAnswer } from './bot.js';
 import { messages } from './msg.js';
-import { userInput } from './user.js';
-import { spinner } from './loading.js';
+import { userInput, inputCheck } from './user.js';
 dotenv.config()
 initBot()
 
 ;(async ()=>{
   while(true){
-    await userInput()
-    spinner.start()
+    const input = await userInput()
+    inputCheck(input)
     const answer = await getBotAnswer(messages)
-    spinner.stop()
     botAnswer(answer)
   }
 })()

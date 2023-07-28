@@ -1,6 +1,8 @@
 import colors from 'colors';
 import { Configuration, OpenAIApi } from 'openai';
 import { addMsgBack } from './msg.js';
+import { spinner } from './loading.js';
+
 
 colors.enable()
 let Bot: OpenAIApi | undefined = undefined
@@ -22,10 +24,12 @@ export const initBot = () => {
  * @returns 
  */
 export const getBotAnswer = async (messages: Message[]) => {
+  spinner.start()
   const chatCompletion = await Bot.createChatCompletion({
     model: "gpt-3.5-turbo",
     messages,
   });
+  spinner.stop()
   const answer = chatCompletion.data.choices[0].message?.content!
   return addMsgBack(answer)
 }

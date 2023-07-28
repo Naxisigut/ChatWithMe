@@ -7,3 +7,16 @@ export const userInput = async () => {
   })
   return addMsgGo(input.question)
 }
+
+export const inputCheck = (command: string) => {
+  switch (command) {
+    case 'exit':
+      process.exit()
+    case 'Exit':
+      process.exit()
+      break;
+  
+    default:
+      break;
+  }
+}
