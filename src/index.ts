@@ -1,16 +1,8 @@
 import dotenv from 'dotenv';
 import { Configuration, OpenAIApi } from 'openai';
-import readline from 'readline-promise';  // @ts-ignore
+// import readline from 'readline-promise';  // @ts-ignore
 import inquirer from 'inquirer';
 dotenv.config()
-// process.stdin.setEncoding('utf8');
-
-// readlineSync.setDefaultOptions({
-  // print: (display, encoding)=>{
-  //   console.log("display =", display)
-  //   console.log("encoding =", encoding)
-  // }
-// })
 
 const configuration = new Configuration({
   basePath: 'https://api.chatanywhere.com.cn',
@@ -18,20 +10,17 @@ const configuration = new Configuration({
 });
 const openai = new OpenAIApi(configuration);
 
-const rl = readline.createInterface({
-  input: process.stdin,
-  output: process.stdout,
-});
-
 const messages: {role: 'user' | 'assistant', content: string}[] = []
 ;(async ()=>{
   while(true){
 
-    // const userInput = readlineSync.question('You: ', {})
-    const userInput = await rl.questionAsync('You: ')
-    messages.push({
-      role: 'user', content: userInput
+    const userInput = await inquirer.prompt({
+      name: 'question', message: 'You: '
     })
+    messages.push({
+      role: 'user', content: userInput.question
+    })
+
 
     const chatCompletion = await openai.createChatCompletion({
       model: "gpt-3.5-turbo",
