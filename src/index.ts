@@ -1,44 +1,18 @@
 import dotenv from 'dotenv';
-import { Configuration, OpenAIApi } from 'openai';
-import colors from 'colors';
-// import readline from 'readline-promise';  // @ts-ignore
-import inquirer from 'inquirer';
-import ora from 'ora';
+import { initBot, getBotAnswer, botAnswer } from './bot.js';
+import { messages } from './msg.js';
+import { userInput } from './user.js';
+import { spinner } from './loading.js';
 dotenv.config()
-colors.enable()
+initBot()
 
-const configuration = new Configuration({
-  basePath: 'https://api.chatanywhere.com.cn',
-  apiKey: process.env.OPENAI_API_KEY,
-});
-const openai = new OpenAIApi(configuration);
-
-
-const messages: {role: 'user' | 'assistant', content: string}[] = []
 ;(async ()=>{
   while(true){
-    
-    const userInput = await inquirer.prompt({
-      name: 'question', message: 'You: ', default: 'vue的作者是？', prefix: ''
-    })
-    messages.push({
-      role: 'user', content: userInput.question
-    })
-    
-    
-    const spinner = ora('Loading unicorns').start()
-    const chatCompletion = await openai.createChatCompletion({
-      model: "gpt-3.5-turbo",
-      messages: messages,
-    });
-
-    const answer = chatCompletion.data.choices[0].message?.content!
-    messages.push({
-      role: 'assistant',
-      content: answer
-    })
+    await userInput()
+    spinner.start()
+    const answer = await getBotAnswer(messages)
     spinner.stop()
-    console.log(` ${'Bot: '.rainbow} ${answer.green}\r`);
+    botAnswer(answer)
   }
 })()
 
